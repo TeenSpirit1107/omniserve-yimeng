@@ -6,8 +6,8 @@ export MODEL_PATH=/local/ymteng/models/Llama-3-8B-Instruct-QServe
 export CUDA_LAUNCH_BLOCKING=1
 
 # Set required environment variables for GPU blocks
-export NUM_RETRIEVAL_GPU_PAGE_BLOCKS=3200
-export NUM_STREAMING_GPU_PAGE_BLOCKS=3200
+export NUM_RETRIEVAL_GPU_PAGE_BLOCKS=800
+export NUM_STREAMING_GPU_PAGE_BLOCKS=800
 
 GLOBAL_BATCH_SIZE=128 \
 python qserve_benchmark.py \
