@@ -124,7 +124,7 @@ class MixtralAttention(nn.Module):
         quantized_sum_buffer: torch.Tensor,
         input_metadata: InputMetadata,
         qkv_proj_act_buffer: torch.Tensor,
-        out_down_proj_act_buffer: torch.Tensor,
+        out_attn_proj_act_buffer: torch.Tensor,
     ):
         # INT8 in, FP16 out for this module
         # print(self.layer_idx, "begin", hidden_states.isnan().sum(), input_scale.shape)
@@ -250,7 +250,7 @@ class MixtralAttention(nn.Module):
             quantized_hidden_states_buffer,
             quantized_scale_buffer,
             quantized_sum_buffer,
-            out_down_proj_act_buffer,
+            out_attn_proj_act_buffer,
         )
 
 
@@ -424,7 +424,7 @@ class MixtralDecoderLayer(nn.Module):
         hidden_states: torch.Tensor,
         input_metadata: InputMetadata,
         qkv_proj_act_buffer: torch.Tensor,
-        out_down_proj_act_buffer: torch.Tensor,
+        out_attn_proj_act_buffer: torch.Tensor,
         gate_up_proj_act_buffer: torch.Tensor,
         quantized_hidden_states_buffer: torch.Tensor,
         quantized_mlp_act_buffer: torch.Tensor,
@@ -448,10 +448,10 @@ class MixtralDecoderLayer(nn.Module):
             quantized_scale_buffer=quantized_scale_buffer,
             quantized_sum_buffer=quantized_sum_buffer,
             qkv_proj_act_buffer=qkv_proj_act_buffer,
-            out_down_proj_act_buffer=out_down_proj_act_buffer,
+            out_down_proj_act_buffer=out_attn_proj_act_buffer,
         )
 
-        hidden_states = residual + out_down_proj_act_buffer
+        hidden_states = residual + out_attn_proj_act_buffer
 
         # Fully Connected
         residual = hidden_states
@@ -546,7 +546,7 @@ class MixtralModel(nn.Module):
             qkv_proj_act_buffer = act_buffer[
                 : batched_seq_len * (self.q_size + 2 * self.kv_size)
             ].view(batched_seq_len, self.q_size + 2 * self.kv_size)
-            out_down_proj_act_buffer = act_buffer[
+            out_attn_proj_act_buffer = act_buffer[
                 : batched_seq_len * self.config.hidden_size
             ].view(batched_seq_len, self.config.hidden_size)
             gate_up_proj_act_buffer = act_buffer[
@@ -581,7 +581,7 @@ class MixtralModel(nn.Module):
                     hidden_states,
                     input_metadata,
                     qkv_proj_act_buffer,
-                    out_down_proj_act_buffer,
+                    out_attn_proj_act_buffer,
                     gate_up_proj_act_buffer,
                     quantized_hidden_states_buffer,
                     quantized_mlp_act_buffer,

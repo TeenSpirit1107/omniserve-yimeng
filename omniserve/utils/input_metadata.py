@@ -59,20 +59,27 @@ class ActivationBuffer:
 
     def __allocate_activation_buffer_llama(self):
         # Allocate fp16 activation buffer.
+        # Need space for qkv projection and output projection (attention + MLP)
+        buffer_size = max(
+            self.batched_seq_len * (self.q_size + 2 * self.kv_size),  # qkv projection
+            self.batched_seq_len * self.hidden_size,  # output projection (attention + MLP)
+            self.batched_seq_len * 2 * self.intermediate_size  # gate_up projection
+        )
         self.act_buffer = torch.empty(
-            (
-                self.batched_seq_len
-                * max(self.q_size + 2 * self.kv_size, 2 * self.intermediate_size)
-            ),
+            buffer_size,
             device=self.device,
             dtype=torch.float16,
         )
         self.qkv_proj_act_buffer = self.act_buffer[
             : self.batched_seq_len * (self.q_size + 2 * self.kv_size)
         ].view(self.batched_seq_len, self.q_size + 2 * self.kv_size)
-        self.out_down_proj_act_buffer = self.act_buffer[
+        # Separate buffers for attention and MLP outputs to avoid conflicts
+        self.out_attn_proj_act_buffer = self.act_buffer[
             : self.batched_seq_len * self.hidden_size
         ].view(self.batched_seq_len, self.hidden_size)
+        self.out_down_proj_act_buffer = torch.empty(
+            (self.batched_seq_len, self.hidden_size), device=self.device, dtype=torch.float16
+        )
         # self.gate_up_proj_act_buffer = self.act_buffer[
         #     : self.batched_seq_len * 2 * self.intermediate_size
         # ].view(self.batched_seq_len, 2 * self.intermediate_size)

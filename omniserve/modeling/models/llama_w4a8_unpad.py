@@ -357,7 +357,7 @@ class LlamaAttention(nn.Module):
             activation_buffer.quantized_hidden_states_buffer,
             activation_buffer.quantized_scale_buffer,
             activation_buffer.quantized_sum_buffer,
-            activation_buffer.out_down_proj_act_buffer,
+            activation_buffer.out_attn_proj_act_buffer,
         )
 
 
@@ -422,7 +422,7 @@ class LlamaDecoderLayer(nn.Module):
         )
         # INT8 -> FP16
         self.self_attn(input_metadata)
-        hidden_states = residual + activation_buffer.out_down_proj_act_buffer
+        hidden_states = residual + activation_buffer.out_attn_proj_act_buffer
         # Fully Connected
         residual = hidden_states
         # FP16 -> INT8
