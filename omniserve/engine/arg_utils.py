@@ -55,7 +55,7 @@ class EngineArgs:
     pipeline_parallel_size: int = 1
     tensor_parallel_size: int = 1
     max_parallel_loading_workers: Optional[int] = None
-    block_size: int = 64
+    block_size: int = 128
     swap_space: int = 4  # GiB
     gpu_memory_utilization: float = 0.90
     max_num_batched_tokens: int = 262144
@@ -233,7 +233,7 @@ class EngineArgs:
             "--block-size",
             type=int,
             default=EngineArgs.block_size,
-            choices=[64],
+            choices=[64, 128],
             help="token block size",
         )
         # TODO(woosuk): Support fine-grained seeds (e.g., seed per request).
