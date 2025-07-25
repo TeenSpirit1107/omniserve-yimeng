@@ -23,6 +23,6 @@ python qserve_benchmark.py \
   --ctx-local-token 8192 \
   --dec-sink-token 128 \
   --dec-local-token 256 \
-  --sub-chunk-per-block 4 \
+  --sub-chunk-per-block 128 \
   --dynamic-sparse-token-budget 4096 \
   --selector-update-interval 4
