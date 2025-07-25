@@ -214,7 +214,7 @@ class LlamaAttention(nn.Module):
         else:
             self.invoke_quant = self.invoke_quant_wo_act_sum
 
-        self.tokens_per_block = 64                                                                          # TODO: This should be a parameter
+        self.tokens_per_block = 128                                                                          # TODO: This should be a parameter
         self.kv_quant_granularity = model_config.kv_quant_granularity
         self.sub_chunk_per_block = model_config.sp_attn_config.get_dec_sub_chunk_per_block()
         self.sparse_decode_mode = model_config.sp_attn_config.get_sparse_decode_mode()
