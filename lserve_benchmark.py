@@ -153,17 +153,22 @@ def initialize_engine(args: argparse.Namespace) -> LLMEngine:
 def main(args: argparse.Namespace):
     """Main function that sets up and runs the prompt processing."""
 
-    gpu_capabilites = torch.cuda.get_device_properties(0)
+    # Get the actual GPU device index (considering CUDA_VISIBLE_DEVICES)
+    actual_device_id = 0  # This will be the first visible device
+    gpu_capabilites = torch.cuda.get_device_properties(actual_device_id)
     # print("GPU Name:", gpu_capabilites.name)
     str = gpu_capabilites.name
     if "A100" in str:
         device_name = "A100"
+    elif "A40" in str:
+        device_name = "A40"
     elif "A6000" in str:
         device_name = "A6000"
     elif "4090" in str:
         device_name = "RTX4090"
     else:
-        print("Unsupported GPU")
+        print("Unsupported GPU, using generic name")
+        device_name = "Unknown"
     if "PCIe" in str:
         device_name += "_PCIe"
     else:
