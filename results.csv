@@ -1,18 +1,2 @@
 ==================================================
-./QServe-benchmarks/Llama-3-8B: Batch=128, Input=1024, Output=512
-==================================================
-./QServe-benchmarks/Llama-2-7B: Batch=128, Input=1024, Output=512
-==================================================
-./QServe-benchmarks/Mistral-7B: Batch=128, Input=1024, Output=512
-==================================================
-./QServe-benchmarks/Llama-2-13B: Batch=64, Input=1024, Output=512
-==================================================
-./QServe-benchmarks/Llama-30B: Batch=32, Input=1024, Output=512
-==================================================
-./QServe-benchmarks/Yi-34B: Batch=64, Input=1024, Output=512
-==================================================
-./QServe-benchmarks/Llama-2-70B: Batch=24, Input=1024, Output=512
-==================================================
-./QServe-benchmarks/Qwen-1.5-72B: Batch=8, Input=1024, Output=512
-==================================================
-./QServe-benchmarks/Llama-3-8B: Batch=128, Input=1024, Output=512
+/local/ymteng/models/Llama-3-8B-Instruct-QServe: Batch=128, Input=1024, Output=512
