@@ -1,0 +1,6 @@
+==================================================
+/local/ymteng/models/Llama-3-8B-Instruct-QServe: Batch=128, Input=1024, Output=512
+Round 0 Throughput: 1389.8650230397611 tokens / second.
+Round 1 Throughput: 1584.7167534744594 tokens / second.
+Round 2 Throughput: 1510.0595681724133 tokens / second.
+==================================================
