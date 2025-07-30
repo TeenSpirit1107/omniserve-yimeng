@@ -1,5 +1,8 @@
 # Benchmark script for QServe on A40 (adjusted from A100). Batch size is decided by the device memory budget
 
+# Set GPU to use GPU 1 (which is mostly free)
+export CUDA_VISIBLE_DEVICES=1
+
 # Download the model config files for benchmarking
 MODEL_CONFIG_DIR_PATH=./QServe-benchmarks
 if [ ! -d "$MODEL_CONFIG_DIR_PATH" ]; then
