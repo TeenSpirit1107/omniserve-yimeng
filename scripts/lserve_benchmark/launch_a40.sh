@@ -8,7 +8,7 @@ model_name=Llama-3-8B-Instruct-Gradient-1048k
 model_path=/local/ymteng/models/Llama-3-8B-Instruct-Gradient-1048k
 
 batch_size=1
-prefill_len_list=(1000 2000 4000 8000)
+prefill_len_list=(1000 2000 4000)
 decode_len=128
 precision=w8a8kv8
 kv_quant_granularity=per_tensor
