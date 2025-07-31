@@ -32,31 +32,34 @@ device_id=${14:-}
 export GLOBAL_BATCH_SIZE=${batch_size} 
 export GLOBAL_PROMPT_LEN=${prompt_len} 
 export GLOBAL_GENERATE_LEN=${decode_len} 
-export NUM_RETRIEVAL_GPU_PAGE_BLOCKS=5000 
-export NUM_STREAMING_GPU_PAGE_BLOCKS=500
+# Conservative GPU blocks for A40 compatibility (reduced for stability)
+export NUM_RETRIEVAL_GPU_PAGE_BLOCKS=400 
+export NUM_STREAMING_GPU_PAGE_BLOCKS=400
 
 # Only set CUDA_VISIBLE_DEVICES if device_id is provided
 if [ ! -z "$device_id" ]; then
     export CUDA_VISIBLE_DEVICES=${device_id}
 fi
 
-export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True,max_split_size_mb:128
+export CUDA_LAUNCH_BLOCKING=1
 
 common_args="--model $model_path \
              --benchmarking \
              --precision ${precision} \
              --group-size -1 \
-             --max-num-batched-tokens 4195000 \
-             --chunk-prefill-size 32000 \
+             --max-num-batched-tokens 262144 \
+             --max-model-len 262144 \
+             --chunk-prefill-size 128000 \
              --kv-quant-granularity $kv_quant_granularity \
-             --multiblock-switch 2048 \
+             --multiblock-switch 256 \
              --static-sparse-attn-load-dir $attn_path \
              --static-sparsity $static_sparsity \
              --sparse-decode-mode $sparse_decode_mode \
-             --ctx-sink-token 128 \
-             --ctx-local-token 8192 \
-             --dec-sink-token 128 \
-             --dec-local-token 256 \
+             --ctx-sink-token 32 \
+             --ctx-local-token 1024 \
+             --dec-sink-token 32 \
+             --dec-local-token 64 \
              --sub-chunk-per-block $sub_chunk_per_block \
              --dynamic-sparse-token-budget $dynamic_attn_budget \
              --selector-update-interval $dynamic_select_interval"

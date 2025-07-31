@@ -8,7 +8,7 @@ model_name=Llama-3-8B-Instruct-Gradient-1048k
 model_path=/local/ymteng/models/Llama-3-8B-Instruct-Gradient-1048k
 
 batch_size=1
-prefill_len_list=(1000 2000 4000 8000 16000)
+prefill_len_list=(1000 2000 4000 8000)
 decode_len=128
 precision=w8a8kv8
 kv_quant_granularity=per_tensor
@@ -17,7 +17,7 @@ kv_quant_granularity=per_tensor
 static_sparsity=0.0
 sparse_prefill_mode=0
 sparse_decode_mode=0
-dynamic_attn_budget=2048
+dynamic_attn_budget=1024
 dynamic_select_interval=4
 sub_chunk_per_block=4
 
