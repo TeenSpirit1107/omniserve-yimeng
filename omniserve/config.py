@@ -105,7 +105,11 @@ class ModelConfig:
         )
         # TODO (kentang-mit@): make it more general. refer to vllm's _get_and_verify_max_len
         self.dtype = self.hf_config.torch_dtype
-        self.max_model_len = self.hf_config.max_position_embeddings
+        # Only use model's max_position_embeddings if max_model_len is not specified
+        if max_model_len is None:
+            self.max_model_len = self.hf_config.max_position_embeddings
+        else:
+            self.max_model_len = max_model_len
         self.sp_attn_config = None # assign later
         self._verify_tokenizer_mode()
 
