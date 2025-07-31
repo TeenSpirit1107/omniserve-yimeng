@@ -13,9 +13,10 @@ decode_len=128
 precision=w8a8kv8
 kv_quant_granularity=per_tensor
 
-static_sparsity=0.5
-sparse_prefill_mode=1
-sparse_decode_mode=1
+# Disable sparse attention for stability on A40
+static_sparsity=0.0
+sparse_prefill_mode=0
+sparse_decode_mode=0
 dynamic_attn_budget=2048
 dynamic_select_interval=4
 sub_chunk_per_block=4
