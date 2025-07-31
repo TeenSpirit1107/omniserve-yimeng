@@ -44,6 +44,7 @@ fi
 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True,max_split_size_mb:64
 export CUDA_LAUNCH_BLOCKING=1
 export TORCH_USE_CUDA_DSA=1
+export DISABLE_FLASH_ATTN=1
 
 common_args="--model $model_path \
              --benchmarking \
