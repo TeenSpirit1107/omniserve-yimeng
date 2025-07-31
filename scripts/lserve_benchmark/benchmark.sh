@@ -25,8 +25,8 @@ dynamic_attn_budget=${11:-4096}     # Token budget for dynamic sparse attention.
 dynamic_select_interval=${12:-4}    # The interval of steps to activate the dynamic page selector
 sub_chunk_per_block=${13:-4} 
 
-# GPU index
-device_id=${14:-0}
+# GPU index (optional)
+device_id=${14:-}
 
 
 export GLOBAL_BATCH_SIZE=${batch_size} 
@@ -34,7 +34,11 @@ export GLOBAL_PROMPT_LEN=${prompt_len}
 export GLOBAL_GENERATE_LEN=${decode_len} 
 export NUM_RETRIEVAL_GPU_PAGE_BLOCKS=5000 
 export NUM_STREAMING_GPU_PAGE_BLOCKS=500
-export CUDA_VISIBLE_DEVICES=${device_id} 
+
+# Only set CUDA_VISIBLE_DEVICES if device_id is provided
+if [ ! -z "$device_id" ]; then
+    export CUDA_VISIBLE_DEVICES=${device_id}
+fi
 
 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 
